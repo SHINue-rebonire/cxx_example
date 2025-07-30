@@ -10,12 +10,16 @@ fn load_grayscale_image(path: &str) -> Result<GrayImage, ImageError> {
 fn main() -> Result<(), ImageError> {
     let img = load_grayscale_image("kuma.jpg")?;
     let (width, height) = img.dimensions();
-    let img_data = img.into_raw();
+    // let img_data = img.into_raw();
+    let empty_data: Vec<u8> = vec![]; // 空のデータ
 
-    let reversed = cxx::transform(&img_data);
-    let img_reversed = GrayImage::from_raw(width, height, reversed).expect("Failed");
-
-    img_reversed.save("kuma_reversed.png")?;
+    match cxx::transform(&empty_data) {
+        Ok(reversed) => {
+            let img_reversed = image::GrayImage::from_raw(width, height, reversed).expect("Failed");
+            img_reversed.save("kuma_reversed.png")?;
+        }
+        Err(e) => println!("C++側エラー: {}", e),
+    }
 
     Ok(())
 }
