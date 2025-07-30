@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 cxx = "1.0.161"
+image = "0.25.6"
 
 [build-dependencies]
 cxx-build = "1.0.161"
